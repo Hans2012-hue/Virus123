@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WARNING: SYSTEM INFECTED</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        body {
+            background-color: #000;
+            color: #0f0;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+        .scan-line {
+            position: absolute;
+            height: 5px;
+            width: 100%;
+            background: linear-gradient(to bottom, rgba(0,255,0,0.2), rgba(0,255,0,0.7));
+            top: 0;
+            animation: scan 5s linear infinite;
+            z-index: 1;
+        }
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+        
+        .warning-header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .warning-header h1 {
+            font-size: 32px;
+            color: #f00;
+            text-shadow: 0 0 10px #f00;
+            margin-bottom: 10px;
+        }
+        
+        .warning-header h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .message-box {
+            background-color: rgba(0, 30, 0, 0.8);
+            border: 1px solid #0f0;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 15px #0f0;
+        }
+        
+        .message-box p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .password-form {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .password-input {
+            background-color: #000;
+            border: 2px solid #0f0;
+            color: #0f0;
+            padding: 15px;
+            font-size: 18px;
+            width: 300px;
+            margin-right: 10px;
+            text-align: center;
+            letter-spacing: 3px;
+        }
+        
+        .submit-btn {
+            background-color: #0f0;
+            color: #000;
+            border: none;
+            padding: 15px 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background-color: #0a0;
+            box-shadow: 0 0 15px #0f0;
+        }
+        .attempts {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #ff0;
+        }
+        
+        .binary-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .binary-char {
+            position: absolute;
+            color: #0f0;
+            font-size: 14px;
+            animation: fall linear infinite;
+        }
+        
+        @keyframes fall {
+            to { transform: translateY(100vh); }
+        }
+        .error-message {
+            color: #f00;
+            margin-top: 15px;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .glitch-effect {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .glitch-effect::before,
+        .glitch-effect::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .glitch-effect::before {
+            animation: glitch-animation 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+            color: #f00;
+            z-index: -1;
+        }
+      .glitch-effect::after {
+            animation: glitch-animation 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) reverse both infinite;
+            color: #0ff;
+            z-index: -2;
+        }
+        
+        @keyframes glitch-animation {
+            0% { transform: translate(0); }
+            20% { transform: translate(-5px, 5px); }
+            40% { transform: translate(-5px, -5px); }
+            60% { transform: translate(5px, 5px); }
+            80% { transform: translate(5px, -5px); }
+            100% { transform: translate(0); }
+        }
+        
+        .countdown {
+            font-size: 120px;
+            color: #f00;
+            text-align: center;
+            margin: 30px 0;
+            text-shadow: 0 0 20px #f00;
+            display: none;
+        }
+        .no-close {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="no-close"></div>
+    <div class="binary-rain" id="binaryRain"></div>
+    <div class="scan-line"></div>
+    
+    <div class="container">
+      <div class="warning-header">
+            <h1 class="glitch-effect" data-text="⚠️ WARNING: SYSTEM INFECTED ⚠️">⚠️ WARNING: SYSTEM INFECTED ⚠️</h1>
+            <h2>CRITICAL SYSTEM ERROR DETECTED</h2>
+        </div>
+        
+        <div class="countdown" id="countdown">10</div>
+        
+        <div class="message-box">
+            <p>> Your system has been locked by a security threat.</p>
+            <p>> All your files have been encrypted.</p>
+            <p>> To unlock your system, enter the password below.</p>
+            <p>> You have only 3 attempts before permanent lock.</p>
+            <p>> Contact: farhan@security-response.com</p>
+        </div>
+        
+        <div class="password-form">
+            <input type="password" class="password-input" id="passwordInput" placeholder="ENTER PASSWORD" autocomplete="off">
+            <button class="submit-btn" id="submitBtn">UNLOCK</button>
+            <div class="attempts" id="attempts">Attempts remaining: 3</div>
+            <div class="error-message" id="errorMessage">INCORRECT PASSWORD! SYSTEM MAY BE PERMANENTLY LOCKED.</div>
+        </div>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+            const passwordInput = document.getElementById('passwordInput');
+            const submitBtn = document.getElementById('submitBtn');
+            const attemptsDisplay = document.getElementById('attempts');
+            const errorMessage = document.getElementById('errorMessage');
+            const binaryRain = document.getElementById('binaryRain');
+            const countdown = document.getElementById('countdown');
+            const noClose = document.querySelector('.no-close');
+            
+            let attempts = 3;
+            let locked = false;
+            
+            // Create binary rain effect
+            function createBinaryRain() {
+                const chars = '01010101010101010101FARHAN01010101';
+                const containerWidth = window.innerWidth;
+                for (let i = 0; i < 100; i++) {
+                    const char = document.createElement('div');
+                    char.className = 'binary-char';
+                    char.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
+                    char.style.left = Math.random() * containerWidth + 'px';
+                    char.style.animationDuration = (Math.random() * 5 + 3) + 's';
+                    char.style.animationDelay = Math.random() * 5 + 's';
+                    char.style.opacity = Math.random() * 0.7 + 0.3;
+                    binaryRain.appendChild(char);
+                }
+            }
+            
+            // Disable right-click and other context menus
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                showError('Context menu disabled! Enter password to unlock system.');
+            });
+            
+            // Disable keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                // Allow F12 for DevTools but show warning
+                if (e.key === 'F12') {
+                    e.preventDefault();
+                    showError('Developer tools are disabled! Enter password to unlock system.');
+                }
+                
+                // Block Ctrl+Shift+I, Ctrl+Shift+C, Ctrl+Shift+J, Ctrl+U
+                if (e.ctrlKey && e.shiftKey && ['I', 'C', 'J'].includes(e.key)) {
+                    e.preventDefault();
+                    showError('Developer tools are disabled! Enter password to unlock system.');
+                }
+                if (e.ctrlKey && e.key === 'u') {
+                    e.preventDefault();
+                    showError('View source is disabled! Enter password to unlock system.');
+                }
+                
+                // Block Alt+Tab, Win key, etc.
+                if (e.altKey || e.key === 'Tab' || e.key === 'Meta') {
+                    e.preventDefault();
+                    showError('Switching applications is disabled! Enter password to unlock system.');
+                }
+            });
+            
+            // Show error message
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 3000);
+            }
+            // Handle password submission
+            function checkPassword() {
+                if (locked) return;
+                
+                if (passwordInput.value === 'FARHAN') {
+                    // Correct password
+                    alert('System unlocked successfully! Welcome back.');
+                    window.location.href = 'about:blank'; // Redirect to blank page
+                } else {
+                    // Incorrect password
+                    attempts--;
+                    attemptsDisplay.textContent = `Attempts remaining: ${attempts}`;
+                    
+                    if (attempts <= 0) {
+                        // No attempts left
+                        locked = true;
+                        attemptsDisplay.textContent = 'NO ATTEMPTS REMAINING!';
+                        attemptsDisplay.style.color = '#f00';
+                        passwordInput.disabled = true;
+                        submitBtn.disabled = true;
+                        
+                        // Start countdown to "permanent lock"
+                        countdown.style.display = 'block';
+                        let count = 10;
+                        
+                        const countdownInterval = setInterval(() => {
+                            countdown.textContent = count;
+                            count--;
+                            
+                            if (count < 0) {
+                                clearInterval(countdownInterval);
+                                countdown.textContent = 'PERMANENTLY LOCKED';
+                                showError('SYSTEM PERMANENTLY LOCKED. CONTACT ADMINISTRATOR.');
+                                
+                                // Make it even harder to close
+                                noClose.style.display = 'block';
+                                document.body.style.cursor = 'none';
+                                
+                                // Flash screen
+                                const flashInterval = setInterval(() => {
+                                    document.body.style.backgroundColor = document.body.style.backgroundColor === 'black' ? 'red' : 'black';
+                                }, 200);
+                            }
+                        }, 1000);
+                    } else {
+                        // Show error with glitch effect
+                        showError('INCORRECT PASSWORD! TRY AGAIN.');
+                        passwordInput.value = '';
+                        
+                        // Add glitch effect to the whole page
+                        document.body.classList.add('glitch-effect');
+                        setTimeout(() => {
+                          document.body.classList.remove('glitch-effect');
+                        }, 500);
+                    }
+                }
+            }
+            
+            // Event listeners
+            submitBtn.addEventListener('click', checkPassword);
+            passwordInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    checkPassword();
+                }
+            });
+            
+            // Initialize binary rain
+            createBinaryRain();
+            
+            // Prevent closing with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    showError('Escape key is disabled! Enter password to unlock system.');
+                }
+            });
+            
+            // Show initial warning
+            setTimeout(() => {
+                showError('SYSTEM LOCKED. ENTER PASSWORD TO UNLOCK.');
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
